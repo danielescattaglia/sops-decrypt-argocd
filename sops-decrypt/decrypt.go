@@ -9,11 +9,13 @@ import (
 func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
     if r.URL.Path != "/api/v1/getparams.execute" {
         http.Error(w, "404 not found.", http.StatusNotFound)
+        fmt.Fprintf(w, r.URL.Path)
         return
     }
 
     if r.Method != "GET" {
         http.Error(w, "Method is not supported.", http.StatusNotFound)
+         fmt.Fprintf(w, r.Method)
         return
     }
 
