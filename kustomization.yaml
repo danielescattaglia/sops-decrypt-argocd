@@ -6,10 +6,12 @@ resources:
   - manifests/plugin-secret.yaml
   - manifests/service.yaml
 
+generatorOptions:
+  disableNameSuffixHash: true
+
 configMapGenerator:
   - name: sops-decrypt-script
     namespace: argocd-plugins
-    disableNameSuffixHash: true
     files:
       #- main.py=main.py
       - decrypt.go=sops-decrypt/decrypt.go
