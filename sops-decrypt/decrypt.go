@@ -26,10 +26,8 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
             if err != nil {
                 log.Fatal(err)
             }
-            fmt.Printf("%s\n", reqBody)
+            fmt.Fprintf(w, "{\"kind\": \"ConfigMap\",\"apiVersion\": \"v1\",\"metadata\": {\"name\": \"demo\",\"creationTimestamp\": null},\"data\": {\"entry1\": \"prova\"}}")
     }
-
-    fmt.Fprintf(w, "{\"kind\": \"ConfigMap\",\"apiVersion\": \"v1\",\"metadata\": {\"name\": \"demo\",\"creationTimestamp\": null},\"data\": {\"entry1\": \"prova\"}}")
 }
 
 func main() {
