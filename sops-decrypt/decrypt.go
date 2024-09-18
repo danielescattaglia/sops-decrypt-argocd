@@ -13,12 +13,20 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    if r.Method != "GET" {
-        http.Error(w, r.Method, http.StatusNotFound)
-        fmt.Fprintf(w, r.Method)
-        return
-    }
+    //if r.Method != "GET" {
+    //    http.Error(w, r.Method, http.StatusNotFound)
+    //    fmt.Fprintf(w, r.Method)
+    //    return
+    //}
 
+    switch r.Method {
+        case "POST":
+            reqBody, err := ioutil.ReadAll(r.Body)
+            if err != nil {
+                log.Fatal(err)
+            }
+            fmt.Printf("%s\n", reqBody)
+    }
 
     fmt.Fprintf(w, "Hello!")
 }
