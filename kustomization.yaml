@@ -5,6 +5,7 @@ resources:
   - manifests/namespace.yaml
   - manifests/plugin-secret.yaml
   - manifests/service.yaml
+  - manifests/gpg-secret.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
