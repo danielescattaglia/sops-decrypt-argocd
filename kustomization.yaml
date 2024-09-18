@@ -7,7 +7,8 @@ resources:
   - manifests/service.yaml
 
 configMapGenerator:
-  - name: hello-plugin-script
-    namespace: applicationset-hello-plugin
+  - name: sops-decrypt-script
+    namespace: argocd-plugins
     files:
-      - main.py=main.py
+      #- main.py=main.py
+      - decrypt.go=sops-decrypt/decrypt.go
