@@ -4,6 +4,7 @@ import (
     "fmt"
     "log"
     "net/http"
+    "io/ioutil"
 )
 
 func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
