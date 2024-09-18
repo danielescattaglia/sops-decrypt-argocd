@@ -15,7 +15,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
 
     if r.Method != "GET" {
         http.Error(w, "Method is not supported.", http.StatusNotFound)
-         fmt.Fprintf(w, r.Method)
+        fmt.Fprintf(w, r.Method)
         return
     }
 
