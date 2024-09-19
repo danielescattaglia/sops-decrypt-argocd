@@ -4,7 +4,6 @@ metadata:
   name: myplugin
   namespace: argocd
 spec:
-  goTemplate: true
   generators:
     - plugin:
         configMapRef:
