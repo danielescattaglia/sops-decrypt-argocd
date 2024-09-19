@@ -27,7 +27,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                 log.Fatal(err)
             }
             //fmt.Fprintf(w, "{ \"output\": { \"valuesObject\": [ { \"keyrenewperiod\": \"10\", } ] } }")
-            fmt.Fprintf(w, "{ \"output\": {\"parameters\": [{ \"rateLimit\": \"3\",\"rateLimitBurst\": \"5\",\"service\": {\"type\": \"NodePort\"}]}}")
+            fmt.Fprintf(w, "{ \"output\": {\"parameters\": [{\"valuesobject\":{ \"rateLimit\": \"3\",\"rateLimitBurst\": \"5\",\"service\": {\"type\": \"NodePort\"}}]}}")
             fmt.Println(string(reqBody))
     }
 }
