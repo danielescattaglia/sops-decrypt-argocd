@@ -30,9 +30,9 @@ spec:
         repoURL: https://bitnami-labs.github.io/sealed-secrets
         targetRevision: 2.16.1
         helm:
-          releaseName: '{{.valuesobject}}'
-          #releaseName: sealed-secrets
-          #valuesObject:
-         #   '{{.valuesobject}}'
+          #releaseName: '{{.valuesobject}}'
+          releaseName: sealed-secrets
+          values: |
+            '{{.valuesobject}}'
       destination:
         server: "https://kubernetes.default.svc"
