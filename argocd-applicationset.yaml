@@ -21,7 +21,7 @@ spec:
               key3: "value3"
   template:
     metadata:
-      name: sealed-secrets
+      name: '{{"{{"}}releaseName{{"}}"}}-add-ons'
       namespace: argocd
     spec:
       project: default
@@ -30,7 +30,7 @@ spec:
         repoURL: https://bitnami-labs.github.io/sealed-secrets
         targetRevision: 2.16.1
         helm:
-          releaseName: "{{releaseName}}"
+          releaseName: 'pippo'
           #releaseName: sealed-secrets
           #valuesObject: {{.valuesObject}}
       destination:
