@@ -4,7 +4,7 @@ import (
     "fmt"
     "log"
     "net/http"
-    //"io/ioutil"
+    "io/ioutil"
 )
 
 func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
@@ -22,11 +22,12 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
 
     switch r.Method {
         case "POST":
-            //reqBody, err := ioutil.ReadAll(r.Body)
-            //if err != nil {
-            //    log.Fatal(err)
-            //}
+            reqBody, err := ioutil.ReadAll(r.Body)
+            if err != nil {
+                log.Fatal(err)
+            }
             fmt.Fprintf(w, "{\"kind\": \"ConfigMap\",\"apiVersion\": \"v1\",\"metadata\": {\"name\": \"demo\",\"creationTimestamp\": null},\"data\": {\"entry1\": \"prova\"}}")
+            fmt.Println(reqBody)
     }
 }
 

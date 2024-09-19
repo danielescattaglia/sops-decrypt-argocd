@@ -8,6 +8,16 @@ spec:
     - plugin:
         configMapRef:
           name: sops-decrypt
+      input:
+        parameters:
+          key1: "value1"
+          key2: "value2"
+          list: [ "list", "of", "values" ]
+          boolean: true
+          map:
+            key1: "value1"
+            key2: "value2"
+            key3: "value3"
   template:
     metadata:
       name: "from-appset-{{hello}}"
