@@ -23,6 +23,8 @@ spec:
     metadata:
       name: sealed-secret
       namespace: argocd
+      annotations:
+        fromtemplate: '{{.valuesobject}}'
     spec:
       project: default
       source:
@@ -33,6 +35,7 @@ spec:
           #releaseName: '{{.valuesobject}}'
           releaseName: sealed-secrets
           values: |
-            '{{.valuesobject}}'
+            rateLimit: 3
+            rateLimitBurst: 5
       destination:
         server: "https://kubernetes.default.svc"
