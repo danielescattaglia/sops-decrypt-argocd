@@ -23,8 +23,8 @@ spec:
     metadata:
       name: sealed-secret
       namespace: argocd
-      annotations:
-        fromtemplate: '{{.valuesobject}}'
+      #annotations:
+        #fromtemplate: '{{.valuesobject}}'
     spec:
       project: default
       source:
