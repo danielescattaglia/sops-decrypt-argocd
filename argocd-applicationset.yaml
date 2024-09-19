@@ -33,6 +33,6 @@ spec:
           releaseName: 'sealed-secret'
           #releaseName: sealed-secrets
           valuesObject:
-            {{.valuesObject}}
+            {{.valuesobject}}
       destination:
         server: "https://kubernetes.default.svc"
