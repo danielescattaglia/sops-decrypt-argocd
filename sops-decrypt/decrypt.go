@@ -27,7 +27,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                 log.Fatal(err)
             }
             fmt.Fprintf(w, "{\"kind\": \"ConfigMap\",\"apiVersion\": \"v1\",\"metadata\": {\"name\": \"demo\",\"creationTimestamp\": null},\"data\": {\"entry1\": \"prova\"}}")
-            fmt.Println(reqBody)
+            fmt.Println(string(reqBody))
     }
 }
 
