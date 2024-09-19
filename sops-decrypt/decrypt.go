@@ -26,7 +26,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
             if err != nil {
                 log.Fatal(err)
             }
-            fmt.Fprintf(w, "{\"kind\": \"ConfigMap\",\"apiVersion\": \"v1\",\"metadata\": {\"name\": \"demo\",\"creationTimestamp\": null},\"data\": {\"entry1\": \"prova\"}}")
+            fmt.Fprintf(w, "{ \"output\": { \"valuesObject\": [ { \"keyrenewperiod\": \"10\", } ] } }")
             fmt.Println(string(reqBody))
     }
 }
