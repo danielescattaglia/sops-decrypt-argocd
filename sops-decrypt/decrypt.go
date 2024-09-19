@@ -28,7 +28,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
             }
             //fmt.Fprintf(w, "{ \"output\": { \"valuesObject\": [ { \"keyrenewperiod\": \"10\", } ] } }")
             w.Header().Set("Content-Type", "application/json")
-            jsonData := []byte(`{ "output": {"parameters": {"valuesobject":{ "rateLimit": "3","rateLimitBurst": "5","service": {"type": "NodePort"}}}}}`)
+            jsonData := []byte(`{ "output": {"parameters": [{"valuesobject":{ "rateLimit": "3","rateLimitBurst": "5","service": {"type": "NodePort"}}}]}}`)
             w.Write (jsonData)
             fmt.Println(string(reqBody))
     }
