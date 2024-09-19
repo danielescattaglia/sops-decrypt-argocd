@@ -21,7 +21,7 @@ spec:
               key3: "value3"
   template:
     metadata:
-      name: '{{"{{"}}releaseName{{"}}"}}-add-ons'
+      name: '{{releasename}}-add-ons'
       namespace: argocd
     spec:
       project: default
