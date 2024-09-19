@@ -4,6 +4,7 @@ metadata:
   name: myplugin
   namespace: argocd
 spec:
+  goTemplate: true
   generators:
     - plugin:
         configMapRef:
@@ -33,8 +34,7 @@ spec:
         helm:
           #releaseName: '{{.valuesobject}}'
           releaseName: sealed-secrets
-          values: |
-            rateLimit: 3
-            rateLimitBurst: 5
+          valuesObject:
+            {{.valuesobject}}
       destination:
         server: "https://kubernetes.default.svc"
