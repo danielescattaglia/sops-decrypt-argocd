@@ -26,7 +26,8 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
             if err != nil {
                 log.Fatal(err)
             }
-            fmt.Fprintf(w, "{ \"output\": { \"valuesObject\": [ { \"keyrenewperiod\": \"10\", } ] } }")
+            //fmt.Fprintf(w, "{ \"output\": { \"valuesObject\": [ { \"keyrenewperiod\": \"10\", } ] } }")
+            fmt.Fprintf(w, "{ \"output\": { \"releaseName\": \"elogic-sealed\" } }")
             fmt.Println(string(reqBody))
     }
 }
