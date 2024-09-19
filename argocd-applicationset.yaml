@@ -21,7 +21,7 @@ spec:
               key3: "value3"
   template:
     metadata:
-      name: '{{releasename}}-add-ons'
+      name: pippo
       namespace: argocd
     spec:
       project: default
