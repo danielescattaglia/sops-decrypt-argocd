@@ -34,7 +34,7 @@ spec:
         helm:
           #releaseName: '{{.valuesobject}}'
           releaseName: sealed-secrets
-          valuesObject:
+          values: |
             {{.valuesobject}}
       destination:
         server: "https://kubernetes.default.svc"
