@@ -1237,7 +1237,6 @@ spec:
                         fp: 04FFB97586336181B913C89478CF6EC541716D90
                   unencrypted_suffix: _unencrypted
                   version: 3.9.0
-
   template:
     metadata:
       name: sealed-secret

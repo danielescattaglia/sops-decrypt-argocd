@@ -59,6 +59,20 @@ func decryptBytes(b []byte, f formats.Format) ([]byte, error) {
 	return data, nil
 }
 
+func jsonEscape(j string) string {
+    var dataString string
+
+	dataString = strings.Replace(j, `\`, `\\`, -1)
+    dataString = strings.Replace(dataString, "\n", `\n`, -1)
+    dataString = strings.Replace(dataString, "\b", `\b`, -1)
+    dataString = strings.Replace(dataString, "\f", `\f`, -1)
+    dataString = strings.Replace(dataString, "\r", `\r`, -1)
+    dataString = strings.Replace(dataString, "\t", `\t`, -1)
+    dataString = strings.Replace(dataString, "\"", "\\\"", -1)
+
+    return dataString
+}
+
 func createBody(encryptedContent string) ([]byte) {
     data, err := decryptContent(encryptedContent)
     //data, err := decryptFile("./test-secret-json.yaml")
@@ -68,10 +82,7 @@ func createBody(encryptedContent string) ([]byte) {
         return nil
     }
 
-fmt.Println(string(data))
-
-    dataString := strings.Replace(string(data), "\n", `\n`, -1)
-    dataString = strings.Replace(dataString, "\"", "\\\"", -1)
+    dataString := jsonEscape(string(data))
 
     jsonData := []byte(`{
        "output": {
