@@ -46,6 +46,9 @@ spec:
             - name: sops-decrypt-script
               mountPath: "/app/decrypt.go"
               subPath: "decrypt.go"
+            - name: sops-decrypt-script
+              mountPath: "/app/go.mod"
+              subPath: "go.mod"
             - mountPath: /gnupg-home
               name: gnupg-home
       volumes:
