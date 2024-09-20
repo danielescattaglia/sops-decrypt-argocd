@@ -12,6 +12,17 @@ import (
     "github.com/getsops/sops/v3/cmd/sops/formats"
 )
 
+type argocdAppParams struct {
+	Input Input `json:"input"`
+}
+type Parameters struct {
+	ObjectType    string `json:"objectType"`
+	EncryptedFile string `json:"encryptedFile"`
+}
+type Input struct {
+	Parameters Parameters `json:"parameters"`
+}
+
 func decryptFile(file string) ([]byte, error) {
     b, err := ioutil.ReadFile(file)
 	if err != nil {
@@ -85,13 +96,16 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                     log.Fatal(err)
                 }
 
-                var jsonBodyMap map[string]interface{}
-                json.Unmarshal(reqBody, &jsonBodyMap)
+                var jsonBody argocdAppParams
+                errUnmarshal := json.Unmarshal(reqBody, &jsonBody)
+                if errUnmarshal != nil {
+                    log.Fatalf("Unable to marshal JSON due to %s", errUnmarshal)
+                }
 
-                fmt.Println(jsonBodyMap.input.parameters.encryptedFile)
+                fmt.Println(jsonBody.Input.Parameters.EncryptedFile)
 
-                //jsonData := createBody(jsonBodyMap)
-                jsonData :=  []byte(`{ "output": { "valuesObject": { \"keyrenewperiod\": \"10\", } } }`)
+                jsonData := createBody(jsonBody.Input.Parameters.EncryptedFile)
+                //jsonData :=  []byte(`{ "output": { "valuesObject": { \"keyrenewperiod\": \"10\", } } }`)
 
                 w.Header().Set("Content-Type", "application/json")
                 w.Write (jsonData)
@@ -107,6 +121,25 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
     }
 }
 
+func test (w http.ResponseWriter, r *http.Request) {
+    reqBody, err := ioutil.ReadAll(r.Body)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    //var jsonBodyMap map[string]interface{}
+    var reqInput argocdAppParams
+
+    err2 := json.Unmarshal(reqBody, &reqInput)
+
+    fmt.Println(err2)
+    fmt.Println(reqInput.Input.Parameters.ObjectType)
+
+    //for k, v := range jsonBodyMap["parameters"] {
+    //    fmt.Printf("key[%s] value[%s]\n", k, v)
+    //}
+}
+
 func main() {
 
     // in questo momento mi faccio passare da decriptare come stringa tra i parametri di input
@@ -116,6 +149,7 @@ func main() {
 
     http.HandleFunc("/api/v1/getparams.execute", manifestRequestHandler)
     http.HandleFunc("/healthz", healthzRequestHandler)
+    http.HandleFunc("/test", test)
 
     fmt.Println("Hello, World!")
     if err := http.ListenAndServe(":4355", nil); err != nil {
