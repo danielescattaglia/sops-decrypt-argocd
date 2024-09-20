@@ -57,10 +57,10 @@ func createBody() ([]byte) {
     data, err2 := decryptFile("./values.yaml")
 
     jsonData := []byte(`{
-    \"output\": {
-        \"parameters\": [
+    "output": {
+        "parameters": [
             {
-                \"valuesobject\": \"` + string(data) + `\"
+                "valuesobject": "` + string(data) + `"
             }
         ]
     }
