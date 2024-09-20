@@ -47,18 +47,18 @@ spec:
               mountPath: /app
             - name: gnupg-home
               mountPath: /gnupg-home
-          #livenessProbe:
-          #  httpGet:
-          #    path: /healthz
-          #    port: 4355
-          #    initialDelaySeconds: 3
-          #    periodSeconds: 3
-          #readinessProbe:
-          #  httpGet:
-          #    path: /healthz
-          #    port: 4355
-          #    initialDelaySeconds: 3
-          #    periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 4355
+              initialDelaySeconds: 3
+              periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 4355
+              initialDelaySeconds: 3
+              periodSeconds: 3
       volumes:
         - name: sops-gpg
           secret:
