@@ -67,23 +67,31 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
 func createBody() ([]byte) {
     data, err2 := decryptFile("./test-values.yaml")
 
-    jsonData := []byte(`{
-    "output": {
-        "parameters": [
-            {
-                "valuesobject": "` + strings.Replace(string(data), "\"", "\\\"", -1) + `"
-            }
-        ]
+    if err2 != nil {
+        jsonData := []byte(`{
+        "output": {
+            "parameters": [
+                {
+                    "valuesobject": "` + strings.Replace(string(data), "\"", "\\\"", -1) + `"
+                }
+            ]
+        }
+    }`)
+
+        //fmt.Println(string(jsonData))
+
+        return jsonData
+    } else {
+        fmt.Println(err2)
     }
-}`)
 
-    fmt.Println(string(jsonData))
-    fmt.Println(err2)
-
-    return jsonData
+    return nil
 }
 
 func main() {
+
+    // in questo momento mi faccio passare da decriptare come stringa tra i parametri di input
+    // in flux come funziona? Va a leggere il file in un repository?
 
     //fmt.Println(string(createBody()))
 
