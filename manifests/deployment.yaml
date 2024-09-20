@@ -12,11 +12,30 @@ spec:
       labels:
         app.kubernetes.io/name: sops-decrypt-plugin
     spec:
+      initContainers:
+        - name: import-gpg-key
+          command:
+            - gpg
+            - --import
+            - /sops-gpg/sops.asc
+          env:
+            - name: GNUPGHOME
+              value: /gnupg-home/.gnupg
+          image: quay.io/argoproj/argocd:v2.12.3
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /sops-gpg
+              name: sops-gpg
+            - mountPath: /gnupg-home
+              name: gnupg-home
       containers:
         - name: main
           image: golang:latest
           command: ["go"]
           args: ["run", "/app/decrypt.go"]
+          env:
+            - name: GNUPGHOME
+              value: /gnupg-home/.gnupg
           ports:
             - containerPort: 4355
               name: http
@@ -27,10 +46,15 @@ spec:
             - name: sops-decrypt-script
               mountPath: "/app/decrypt.go"
               subPath: "decrypt.go"
+            - mountPath: /gnupg-home
+              name: gnupg-home
       volumes:
         - name: sops-gpg
           secret:
+            defaultMode: 420
             secretName: sops-gpg
         - name: sops-decrypt-script
           configMap:
             name: sops-decrypt-script
+        - emptyDir: {}
+          name: gnupg-home
