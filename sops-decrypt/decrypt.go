@@ -74,7 +74,7 @@ func jsonEscape(j string) string {
     return dataString
 }
 
-func createBody(encryptedContent string, encryptedType string) ([]byte) {
+func createHelmBody(encryptedContent string, encryptedType string) ([]byte) {
     var data []byte = nil
     var err error = nil
 
@@ -128,6 +128,21 @@ func getAuthorizationToken (file string) string {
     return string(b)
 }
 
+func createBody(jsonBody argocdAppParams) []byte {
+    var jsonData []byte
+
+    switch jsonBody.Input.Parameters.ObjectType {
+        case "helm":
+            jsonData = createHelmBody(jsonBody.Input.Parameters.EncryptedFile, jsonBody.Input.Parameters.EncryptedFileType)
+            //jsonData :=  []byte(`{ "output": { "valuesObject": { \"keyrenewperiod\": \"10\", } } }`)
+        default:
+            jsonData = nil
+            fmt.Println ("Unknown object type")
+    }
+
+    return jsonData
+}
+
 func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
     authToken := getAuthorizationToken("/var/run/argo/token")
 
@@ -154,8 +169,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                     return
                 }
 
-                jsonData := createBody(jsonBody.Input.Parameters.EncryptedFile, jsonBody.Input.Parameters.EncryptedFileType)
-                //jsonData :=  []byte(`{ "output": { "valuesObject": { \"keyrenewperiod\": \"10\", } } }`)
+                jsonData := createBody(jsonBody)
 
                 w.Header().Set("Content-Type", "application/json")
                 w.Write (jsonData)
@@ -184,8 +198,6 @@ func main() {
 
     // in questo momento mi faccio passare da decriptare come stringa tra i parametri di input
     // in flux come funziona? Va a leggere il file in un repository?
-
-    //fmt.Println(string(createBody()))
 
     http.HandleFunc("/api/v1/getparams.execute", manifestRequestHandler)
     http.HandleFunc("/healthz", healthzRequestHandler)
