@@ -31,8 +31,10 @@ spec:
       containers:
         - name: main
           image: golang:latest
-          command: ["go"]
-          args: ["run", "/app/decrypt.go"]
+          command: ["ls"]
+          args: ["-la", "/app"]
+          #command: ["go"]
+          #args: ["run", "/app/decrypt.go"]
           env:
             - name: GNUPGHOME
               value: /gnupg-home/.gnupg
