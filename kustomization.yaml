@@ -15,6 +15,6 @@ configMapGenerator:
   - name: sops-decrypt-script
     namespace: argocd-plugins
     files:
-      #- main.py=main.py
       - decrypt.go=sops-decrypt/decrypt.go
       - go.mod=sops-decrypt/go.mod
+      - go.sum=sops-decrypt/go.sum
