@@ -129,10 +129,15 @@ func getAuthorizationToken (file string) string {
 }
 
 func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
-    if r.Header.Get ("Authorization") != "Bearer " + getAuthorizationToken("/var/run/argo/token") {
+    authToken := getAuthorizationToken("/var/run/argo/token")
+
+    if r.Header.Get ("Authorization") != "Bearer " + authToken {
         fmt.Println("Token different, cannot proceed")
         return
     }
+
+    fmt.Println(authToken)
+    fmt.Println(r.Header.Get ("Authorization"))
 
     switch r.Method {
         case "POST":
