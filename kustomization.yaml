@@ -3,7 +3,6 @@ resources:
   - manifests/argocd-extensions/deployment.yaml
   - manifests/argocd-extensions/service.yaml
   - manifests/argocd-extensions/gpg-secret.yaml
-  #- manifests/unused/sops-rules.yaml
 
   - manifests/plugins/token-configmap.yaml
   - manifests/plugins/plugin-secret.yaml

@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  creationTimestamp: null
-  name: sops-rules
-data:
-  .sops.yaml: "\r\ncreation_rules:\r\n  - path_regex: .*values.yaml\r\n    pgp: 04FFB97586336181B913C89478CF6EC541716D90\r\n
-    \ - path_regex: .*.yaml\r\n    encrypted_regex: ^(data|stringData)$\r\n    pgp:
-    04FFB97586336181B913C89478CF6EC541716D90"
