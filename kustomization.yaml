@@ -17,3 +17,4 @@ configMapGenerator:
     files:
       #- main.py=main.py
       - decrypt.go=sops-decrypt/decrypt.go
+      - go.mod=sops-decrypt/go.mod
