@@ -53,6 +53,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
     }
 }
 
+//` + string(data) + `
 func createBody() ([]byte) {
     data, err2 := decryptFile("./values.yaml")
 
@@ -60,7 +61,7 @@ func createBody() ([]byte) {
     "output": {
         "parameters": [
             {
-                "valuesobject": "` + string(data) + `"
+                "valuesobject": "\"keyrenewperiod\": \"10\""
             }
         ]
     }
