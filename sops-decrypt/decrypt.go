@@ -118,9 +118,21 @@ func healthzRequestHandler(w http.ResponseWriter, r *http.Request) {
     }
 }
 
+func getAuthorizationToken (file string) string {
+    b, err := ioutil.ReadFile(file)
+	if err != nil {
+	    fmt.Errorf("error getting authorization token %q: %w", file, err)
+		return ""
+	}
+
+    return string(b)
+}
+
 func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
-    //if r.Header.Get ("Authorization") != "Bearer " +
-    fmt.Println(r.Header.Get ("Authorization"))
+    if r.Header.Get ("Authorization") != "Bearer " + getAuthorizationToken("/var/run/argo/token") {
+        fmt.Println("Token different, cannot proceed")
+        return
+    }
 
     switch r.Method {
         case "POST":

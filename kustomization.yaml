@@ -5,7 +5,7 @@ resources:
   - manifests/argocd-extensions/gpg-secret.yaml
   #- manifests/unused/sops-rules.yaml
 
-  - manifests/plugins/configmap.yaml
+  - manifests/plugins/token-configmap.yaml
   - manifests/plugins/plugin-secret.yaml
 
 generatorOptions:
