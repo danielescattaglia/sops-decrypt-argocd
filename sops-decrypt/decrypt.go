@@ -57,6 +57,8 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
 func createBody() ([]byte) {
     data, err2 := decryptFile("./values.yaml")
 
+    fmt.Println(string(data))
+
     jsonData := []byte(`{
     "output": {
         "parameters": [
