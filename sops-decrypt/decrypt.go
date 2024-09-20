@@ -12,17 +12,54 @@ import (
 )
 
 func decryptFile(file string) ([]byte, error) {
-	b, err := ioutil.ReadFile(file)
+    b, err := ioutil.ReadFile(file)
 	if err != nil {
 		return nil, fmt.Errorf("error reading %q: %w", file, err)
 	}
 
 	format := formats.FormatForPath(file)
+
+	data, err := decryptBytes(b, format)
+
+	return data, err
+}
+
+func decryptContent(content string) ([]byte, error) {
+    format := formats.FormatFromString(content)
+
+	data, err := decryptBytes([]byte(content), format)
+
+	return data, err
+}
+
+func decryptBytes(b []byte, format formats.Format) ([]byte, error) {
 	data, err := decrypt.DataWithFormat(b, format)
 	if err != nil {
 		return nil, fmt.Errorf("trouble decrypting file: %w", err)
 	}
 	return data, nil
+}
+
+func createBody(encryptedContent string) ([]byte) {
+    data, err2 := decryptContent(encryptedContent)
+
+    if err2 != nil {
+        jsonData := []byte(`{
+        "output": {
+            "parameters": [
+                {
+                    "valuesobject": "` + strings.Replace(string(data), "\"", "\\\"", -1) + `"
+                }
+            ]
+        }
+    }`)
+
+        return jsonData
+    } else {
+        fmt.Println(err2)
+    }
+
+    return nil
 }
 
 func healthzRequestHandler(w http.ResponseWriter, r *http.Request) {
@@ -47,12 +84,18 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                     log.Fatal(err)
                 }
                 //fmt.Fprintf(w, "{ \"output\": { \"valuesObject\": [ { \"keyrenewperiod\": \"10\", } ] } }")
-                w.Header().Set("Content-Type", "application/json")
+                var jsonBodyMap map[string]interface{}
+                json.Unmarshal(reqBody, &jsonBodyMap)
 
-                jsonData := createBody()
+                fmt.Println(jsonBodyMap)
+
+                //jsonData := createBody(jsonBodyMap)
+                jsonData :=  `{ "output": { "valuesObject": [ { \"keyrenewperiod\": \"10\", } ] } }`
+
+                w.Header().Set("Content-Type", "application/json")
                 w.Write (jsonData)
 
-                fmt.Println(string(reqBody))
+                fmt.Println(string(jsonData))
             } else {
                 http.Error(w, "404 not found.", http.StatusNotFound)
                 fmt.Fprintf(w, r.URL.Path)
@@ -61,31 +104,6 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
         default:
             fmt.Println(r.URL.Path)
     }
-}
-
-//
-func createBody() ([]byte) {
-    data, err2 := decryptFile("./test-values.yaml")
-
-    if err2 != nil {
-        jsonData := []byte(`{
-        "output": {
-            "parameters": [
-                {
-                    "valuesobject": "` + strings.Replace(string(data), "\"", "\\\"", -1) + `"
-                }
-            ]
-        }
-    }`)
-
-        //fmt.Println(string(jsonData))
-
-        return jsonData
-    } else {
-        fmt.Println(err2)
-    }
-
-    return nil
 }
 
 func main() {
