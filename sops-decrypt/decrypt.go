@@ -68,6 +68,8 @@ func createBody(encryptedContent string) ([]byte) {
         return nil
     }
 
+fmt.Println(string(data))
+
     dataString := strings.Replace(string(data), "\n", `\n`, -1)
     dataString = strings.Replace(dataString, "\"", "\\\"", -1)
 
