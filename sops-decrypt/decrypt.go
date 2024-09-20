@@ -68,15 +68,20 @@ func createBody(encryptedContent string) ([]byte) {
         return nil
     }
 
+    dataString := strings.Replace(string(data), "\n", `\n`, -1)
+    dataString = strings.Replace(dataString, "\"", "\\\"", -1)
+
     jsonData := []byte(`{
        "output": {
            "parameters": [
                {
-                   "valuesobject": "` + strings.Replace(string(data), "\"", "\\\"", -1) + `"
+                   "valuesobject": "` + dataString + `"
                }
            ]
        }
    }`)
+
+
 
    return jsonData
 }
@@ -102,7 +107,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                 if err != nil {
                     log.Fatal(err)
                 }
-fmt.Println(string(reqBody))
+
                 var jsonBody argocdAppParams
                 errUnmarshal := json.Unmarshal(reqBody, &jsonBody)
                 if errUnmarshal != nil {
@@ -127,21 +132,13 @@ fmt.Println(string(reqBody))
 }
 
 func test (w http.ResponseWriter, r *http.Request) {
-    reqBody, err := ioutil.ReadAll(r.Body)
-    if err != nil {
-        log.Fatal(err)
-    }
-    var reqInput argocdAppParams
-    json.Unmarshal(reqBody, &reqInput)
-    b1 := []byte(reqInput.Input.Parameters.EncryptedFile)
 
     b2, err := ioutil.ReadFile("./test-secret.yaml")
 	if err != nil {
 		fmt.Println (fmt.Errorf("error reading: %w", err))
 	}
 
-    fmt.Println(string(b1))
-    fmt.Println(string(b2))
+    fmt.Println(strings.Replace(string(b2), "\n", `\n`, -1))
 }
 
 func main() {
