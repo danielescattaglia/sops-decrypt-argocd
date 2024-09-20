@@ -102,15 +102,12 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                     log.Fatalf("Unable to marshal JSON due to %s", errUnmarshal)
                 }
 
-                fmt.Println(jsonBody.Input.Parameters.EncryptedFile)
-
                 jsonData := createBody(jsonBody.Input.Parameters.EncryptedFile)
                 //jsonData :=  []byte(`{ "output": { "valuesObject": { \"keyrenewperiod\": \"10\", } } }`)
 
                 w.Header().Set("Content-Type", "application/json")
                 w.Write (jsonData)
 
-                fmt.Println(string(jsonData))
             } else {
                 http.Error(w, "404 not found.", http.StatusNotFound)
                 fmt.Fprintf(w, r.URL.Path)
