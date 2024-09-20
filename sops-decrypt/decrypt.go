@@ -84,14 +84,14 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                 if err != nil {
                     log.Fatal(err)
                 }
-                //fmt.Fprintf(w, "{ \"output\": { \"valuesObject\": [ { \"keyrenewperiod\": \"10\", } ] } }")
+
                 var jsonBodyMap map[string]interface{}
                 json.Unmarshal(reqBody, &jsonBodyMap)
 
-                fmt.Println(jsonBodyMap)
+                fmt.Println(jsonBodyMap.input.parameters.encryptedFile)
 
                 //jsonData := createBody(jsonBodyMap)
-                jsonData :=  []byte(`{ "output": { "valuesObject": [ { \"keyrenewperiod\": \"10\", } ] } }`)
+                jsonData :=  []byte(`{ "output": { "valuesObject": { \"keyrenewperiod\": \"10\", } } }`)
 
                 w.Header().Set("Content-Type", "application/json")
                 w.Write (jsonData)
