@@ -7,6 +7,7 @@ import (
     "io/ioutil"
     "strings"
     "encoding/json"
+    //"bytes"
 
     "github.com/getsops/sops/v3/decrypt"
     "github.com/getsops/sops/v3/cmd/sops/formats"
@@ -37,15 +38,21 @@ func decryptFile(file string) ([]byte, error) {
 }
 
 func decryptContent(content string) ([]byte, error) {
-    format := formats.FormatFromString(content)
+    format := formats.FormatFromString("yaml")
 
 	data, err := decryptBytes([]byte(content), format)
 
-	return data, err
+    if err != nil {
+        fmt.Println(err)
+        return nil, err
+    }
+
+	return data, nil
 }
 
-func decryptBytes(b []byte, format formats.Format) ([]byte, error) {
-	data, err := decrypt.DataWithFormat(b, format)
+func decryptBytes(b []byte, f formats.Format) ([]byte, error) {
+	data, err := decrypt.DataWithFormat(b, f)
+
 	if err != nil {
 		return nil, fmt.Errorf("trouble decrypting file: %w", err)
 	}
@@ -53,25 +60,25 @@ func decryptBytes(b []byte, format formats.Format) ([]byte, error) {
 }
 
 func createBody(encryptedContent string) ([]byte) {
-    data, err2 := decryptContent(encryptedContent)
+    data, err := decryptContent(encryptedContent)
+    //data, err := decryptFile("./test-secret-json.yaml")
 
-    if err2 != nil {
-        jsonData := []byte(`{
-        "output": {
-            "parameters": [
-                {
-                    "valuesobject": "` + strings.Replace(string(data), "\"", "\\\"", -1) + `"
-                }
-            ]
-        }
-    }`)
-
-        return jsonData
-    } else {
-        fmt.Println(err2)
+    if err != nil {
+        fmt.Println(err)
+        return nil
     }
 
-    return nil
+    jsonData := []byte(`{
+       "output": {
+           "parameters": [
+               {
+                   "valuesobject": "` + strings.Replace(string(data), "\"", "\\\"", -1) + `"
+               }
+           ]
+       }
+   }`)
+
+   return jsonData
 }
 
 func healthzRequestHandler(w http.ResponseWriter, r *http.Request) {
@@ -95,16 +102,17 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                 if err != nil {
                     log.Fatal(err)
                 }
-
+fmt.Println(string(reqBody))
                 var jsonBody argocdAppParams
                 errUnmarshal := json.Unmarshal(reqBody, &jsonBody)
                 if errUnmarshal != nil {
                     log.Fatalf("Unable to marshal JSON due to %s", errUnmarshal)
+                    return
                 }
 
                 jsonData := createBody(jsonBody.Input.Parameters.EncryptedFile)
                 //jsonData :=  []byte(`{ "output": { "valuesObject": { \"keyrenewperiod\": \"10\", } } }`)
-fmt.Println(string(jsonData))
+
                 w.Header().Set("Content-Type", "application/json")
                 w.Write (jsonData)
 
@@ -123,18 +131,17 @@ func test (w http.ResponseWriter, r *http.Request) {
     if err != nil {
         log.Fatal(err)
     }
-
-    //var jsonBodyMap map[string]interface{}
     var reqInput argocdAppParams
+    json.Unmarshal(reqBody, &reqInput)
+    b1 := []byte(reqInput.Input.Parameters.EncryptedFile)
 
-    err2 := json.Unmarshal(reqBody, &reqInput)
+    b2, err := ioutil.ReadFile("./test-secret.yaml")
+	if err != nil {
+		fmt.Println (fmt.Errorf("error reading: %w", err))
+	}
 
-    fmt.Println(err2)
-    fmt.Println(reqInput.Input.Parameters.ObjectType)
-
-    //for k, v := range jsonBodyMap["parameters"] {
-    //    fmt.Printf("key[%s] value[%s]\n", k, v)
-    //}
+    fmt.Println(string(b1))
+    fmt.Println(string(b2))
 }
 
 func main() {
