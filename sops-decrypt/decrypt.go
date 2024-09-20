@@ -5,6 +5,7 @@ import (
     "log"
     "net/http"
     "io/ioutil"
+    "strings"
 
     "github.com/getsops/sops/v3/decrypt"
     "github.com/getsops/sops/v3/cmd/sops/formats"
@@ -24,46 +25,53 @@ func decryptFile(file string) ([]byte, error) {
 	return data, nil
 }
 
-func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
-    if r.URL.Path != "/api/v1/getparams.execute" {
-        http.Error(w, "404 not found.", http.StatusNotFound)
-        fmt.Fprintf(w, r.URL.Path)
-        return
-    }
-
-    //if r.Method != "GET" {
-    //    http.Error(w, r.Method, http.StatusNotFound)
-    //    fmt.Fprintf(w, r.Method)
-    //    return
-    //}
-
+func healthzRequestHandler(w http.ResponseWriter, r *http.Request) {
     switch r.Method {
-        case "POST":
-            reqBody, err := ioutil.ReadAll(r.Body)
-            if err != nil {
-                log.Fatal(err)
+        case "GET":
+            if r.URL.Path == "/healthz" {
+                w.Write ([]byte(`OK`))
+            } else {
+                fmt.Println(r.URL.Path)
             }
-            //fmt.Fprintf(w, "{ \"output\": { \"valuesObject\": [ { \"keyrenewperiod\": \"10\", } ] } }")
-            w.Header().Set("Content-Type", "application/json")
-
-            jsonData := createBody()
-            w.Write (jsonData)
-
-            fmt.Println(string(reqBody))
+        default:
+            fmt.Println(r.URL.Path)
     }
 }
 
-//` + string(data) + `
-func createBody() ([]byte) {
-    data, err2 := decryptFile("./values.yaml")
+func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
+    switch r.Method {
+        case "POST":
+            if r.URL.Path == "/api/v1/getparams.execute" {
+                reqBody, err := ioutil.ReadAll(r.Body)
+                if err != nil {
+                    log.Fatal(err)
+                }
+                //fmt.Fprintf(w, "{ \"output\": { \"valuesObject\": [ { \"keyrenewperiod\": \"10\", } ] } }")
+                w.Header().Set("Content-Type", "application/json")
 
-    fmt.Println(string(data))
+                jsonData := createBody()
+                w.Write (jsonData)
+
+                fmt.Println(string(reqBody))
+            } else {
+                http.Error(w, "404 not found.", http.StatusNotFound)
+                fmt.Fprintf(w, r.URL.Path)
+                return
+            }
+        default:
+            fmt.Println(r.URL.Path)
+    }
+}
+
+//
+func createBody() ([]byte) {
+    data, err2 := decryptFile("./test-values.yaml")
 
     jsonData := []byte(`{
     "output": {
         "parameters": [
             {
-                "valuesobject": "\"keyrenewperiod\": \"10\""
+                "valuesobject": "` + strings.Replace(string(data), "\"", "\\\"", -1) + `"
             }
         ]
     }
@@ -77,9 +85,10 @@ func createBody() ([]byte) {
 
 func main() {
 
-    //fmt.Println(createBody())
+    //fmt.Println(string(createBody()))
 
     http.HandleFunc("/api/v1/getparams.execute", manifestRequestHandler)
+    http.HandleFunc("/healthz", healthzRequestHandler)
 
     fmt.Println("Hello, World!")
     if err := http.ListenAndServe(":4355", nil); err != nil {
