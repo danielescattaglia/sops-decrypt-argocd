@@ -1,0 +1,10 @@
+# il valore di token punta ad un'altro secret (sops-decrypt-token) che contiene il vero secret
+# verrà inviato come token al plugin nell'header della chiamata
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sops-decrypt
+  namespace: argocd
+data:
+  token: '$sops-decrypt-token:token'
+  baseUrl: "http://sops-decrypt-service.argocd-plugins.svc.cluster.local"

@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: sops-decrypt
-  namespace: argocd
-data:
-  token: '$sops-decrypt:token'
-  baseUrl: "http://sops-decrypt-service.argocd-plugins.svc.cluster.local"

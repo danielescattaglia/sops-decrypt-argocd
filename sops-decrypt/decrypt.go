@@ -120,6 +120,7 @@ func healthzRequestHandler(w http.ResponseWriter, r *http.Request) {
 
 func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
     //if r.Header.Get ("Authorization") != "Bearer " +
+    fmt.Println(r.Header.Get ("Authorization"))
 
     switch r.Method {
         case "POST":
