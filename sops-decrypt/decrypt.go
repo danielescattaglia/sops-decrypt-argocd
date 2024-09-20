@@ -6,6 +6,7 @@ import (
     "net/http"
     "io/ioutil"
     "strings"
+    "encoding/json"
 
     "github.com/getsops/sops/v3/decrypt"
     "github.com/getsops/sops/v3/cmd/sops/formats"
@@ -90,7 +91,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                 fmt.Println(jsonBodyMap)
 
                 //jsonData := createBody(jsonBodyMap)
-                jsonData :=  `{ "output": { "valuesObject": [ { \"keyrenewperiod\": \"10\", } ] } }`
+                jsonData :=  []byte(`{ "output": { "valuesObject": [ { \"keyrenewperiod\": \"10\", } ] } }`)
 
                 w.Header().Set("Content-Type", "application/json")
                 w.Write (jsonData)
