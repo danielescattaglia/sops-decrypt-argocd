@@ -136,7 +136,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    fmt.Println(authToken)
+    fmt.Println("Bearer" + authToken)
     fmt.Println(r.Header.Get ("Authorization"))
 
     switch r.Method {
