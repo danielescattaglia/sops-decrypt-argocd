@@ -104,7 +104,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
 
                 jsonData := createBody(jsonBody.Input.Parameters.EncryptedFile)
                 //jsonData :=  []byte(`{ "output": { "valuesObject": { \"keyrenewperiod\": \"10\", } } }`)
-
+fmt.Println(string(jsonData))
                 w.Header().Set("Content-Type", "application/json")
                 w.Write (jsonData)
 
