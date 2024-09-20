@@ -12,6 +12,7 @@ spec:
         input:
           parameters:
             objectType: "helm"
+            encryptedFileType: "content" # content, path
             encryptedFile: |
               #ENC[AES256_GCM,data:C22pK0ZQcO7zOeVvSp+/7K6DOktwiSsQMD5ZZA==,iv:t+OWr8wOaPO0+tA7pdaDLjAvyjXS9NcDQzIC8dUsxYY=,tag:+FL7ltVXcvgqoD2BVZG/Ew==,type:comment]
               #ENC[AES256_GCM,data:d5B3PXbTStjpsumHvy4rMX6rZ+8gYA8ahx2O7jpfKg==,iv:BLjuoCteorNJ+z9ppN95urh2IdAVR73FA9fyM03NbBg=,tag:uxCt6/lWp6uY83ZW5hF50Q==,type:comment]

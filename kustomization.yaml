@@ -6,7 +6,7 @@ resources:
   - manifests/plugin-secret.yaml
   - manifests/service.yaml
   - manifests/gpg-secret.yaml
-  - manifests/sops-rules.yaml
+  #- manifests/sops-rules.yaml
 
 generatorOptions:
   disableNameSuffixHash: true

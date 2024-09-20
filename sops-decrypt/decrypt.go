@@ -19,6 +19,7 @@ type argocdAppParams struct {
 type Parameters struct {
 	ObjectType    string `json:"objectType"`
 	EncryptedFile string `json:"encryptedFile"`
+	EncryptedFileType string `json:"encryptedFileType"`
 }
 type Input struct {
 	Parameters Parameters `json:"parameters"`
@@ -73,9 +74,16 @@ func jsonEscape(j string) string {
     return dataString
 }
 
-func createBody(encryptedContent string) ([]byte) {
-    data, err := decryptContent(encryptedContent)
-    //data, err := decryptFile("./test-secret-json.yaml")
+func createBody(encryptedContent string, encryptedType string) ([]byte) {
+    var data []byte = nil
+    var err error = nil
+
+    switch encryptedType {
+        case "content":
+            data, err = decryptContent(encryptedContent)
+        case "file":
+            data, err = decryptFile(encryptedContent)
+    }
 
     if err != nil {
         fmt.Println(err)
@@ -94,8 +102,6 @@ func createBody(encryptedContent string) ([]byte) {
        }
    }`)
 
-
-
    return jsonData
 }
 
@@ -113,6 +119,8 @@ func healthzRequestHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
+    //if r.Header.Get ("Authorization") != "Bearer " +
+
     switch r.Method {
         case "POST":
             if r.URL.Path == "/api/v1/getparams.execute" {
@@ -128,7 +136,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                     return
                 }
 
-                jsonData := createBody(jsonBody.Input.Parameters.EncryptedFile)
+                jsonData := createBody(jsonBody.Input.Parameters.EncryptedFile, jsonBody.Input.Parameters.EncryptedFileType)
                 //jsonData :=  []byte(`{ "output": { "valuesObject": { \"keyrenewperiod\": \"10\", } } }`)
 
                 w.Header().Set("Content-Type", "application/json")

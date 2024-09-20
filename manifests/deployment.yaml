@@ -40,6 +40,9 @@ spec:
             - containerPort: 4355
               name: http
           volumeMounts:
+            - mountPath: /var/run/argo/token
+              name: token
+              subPath: token
             - mountPath: /var/run/argo/pgp-key
               name: sops-gpg
               subPath: sops.asc
@@ -56,6 +59,9 @@ spec:
               path: /healthz
               port: 4355
       volumes:
+        - name: token
+          secret:
+            secretName: sops-decrypt-token
         - name: sops-gpg
           secret:
             defaultMode: 420
