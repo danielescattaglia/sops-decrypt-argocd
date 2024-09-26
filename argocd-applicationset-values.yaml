@@ -11,7 +11,7 @@ spec:
           name: sops-decrypt
         input:
           parameters:
-            objectType: "helm"
+            objectType: "helm" # helm, kustomize
             encryptedFileType: "content" # content, path
             encryptedFile: |
               #ENC[AES256_GCM,data:C22pK0ZQcO7zOeVvSp+/7K6DOktwiSsQMD5ZZA==,iv:t+OWr8wOaPO0+tA7pdaDLjAvyjXS9NcDQzIC8dUsxYY=,tag:+FL7ltVXcvgqoD2BVZG/Ew==,type:comment]

@@ -7,4 +7,4 @@ metadata:
   namespace: argocd
 data:
   token: '$sops-decrypt-token:token'
-  baseUrl: "http://sops-decrypt-service.argocd-plugins.svc.cluster.local"
+  baseUrl: "http://sops-decrypt-service.argocd.svc.cluster.local"

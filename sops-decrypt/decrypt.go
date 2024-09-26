@@ -135,6 +135,9 @@ func createBody(jsonBody argocdAppParams) []byte {
         case "helm":
             jsonData = createHelmBody(jsonBody.Input.Parameters.EncryptedFile, jsonBody.Input.Parameters.EncryptedFileType)
             //jsonData :=  []byte(`{ "output": { "valuesObject": { \"keyrenewperiod\": \"10\", } } }`)
+        case "kustomize":
+            // TODO: come gestisco?
+            jsonData = nil
         default:
             jsonData = nil
             fmt.Println ("Unknown object type")

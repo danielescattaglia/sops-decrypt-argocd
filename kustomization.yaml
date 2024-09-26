@@ -2,7 +2,8 @@ resources:
   - manifests/argocd-extensions/applicationset-secret.yaml
   - manifests/argocd-extensions/deployment.yaml
   - manifests/argocd-extensions/service.yaml
-  - manifests/argocd-extensions/gpg-secret.yaml
+  # il secret gpg-secret deve essere già presente in argo
+  #- manifests/argocd-extensions/gpg-secret.yaml (sops-gpg)
 
   - manifests/plugins/token-configmap.yaml
   - manifests/plugins/plugin-secret.yaml
@@ -12,7 +13,7 @@ generatorOptions:
 
 configMapGenerator:
   - name: sops-decrypt-script
-    namespace: argocd-plugins
+    namespace: argocd
     files:
       - decrypt.go=sops-decrypt/decrypt.go
       - go.mod=sops-decrypt/go.mod
