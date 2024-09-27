@@ -4,9 +4,9 @@ import (
     "fmt"
     "log"
     "net/http"
-    "io/ioutil"
     "strings"
     "encoding/json"
+    "os"
     //"bytes"
 
     "github.com/getsops/sops/v3/decrypt"
@@ -26,7 +26,7 @@ type Input struct {
 }
 
 func decryptFile(file string) ([]byte, error) {
-    b, err := ioutil.ReadFile(file)
+    b, err := os.ReadFile(file)
 	if err != nil {
 		return nil, fmt.Errorf("error reading %q: %w", file, err)
 	}
@@ -119,7 +119,7 @@ func healthzRequestHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func getAuthorizationToken (file string) string {
-    b, err := ioutil.ReadFile(file)
+    b, err := os.ReadFile(file)
 	if err != nil {
 	    fmt.Errorf("error getting authorization token %q: %w", file, err)
 		return ""

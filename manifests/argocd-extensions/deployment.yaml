@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sops-decrypt-plugin
-  namespace: argocd
+  namespace: argocd-plugins
 spec:
   selector:
     matchLabels:
@@ -14,14 +14,13 @@ spec:
     spec:
       initContainers:
         - name: import-gpg-key
-          command:
-            - gpg
-            - --import
-            - /sops-gpg/sops.asc
+          command: [ "/usr/bin/bash", "-c" ]
+          args:
+          - for i in $( find /sops-gpg -maxdepth 2 -type f -printf "%p\n"); do gpg --import $i; done
           env:
             - name: GNUPGHOME
               value: /gnupg-home/.gnupg
-          image: quay.io/argoproj/argocd:v2.12.3
+          image: quay.io/argoproj/argocd:v2.12.4
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - mountPath: /sops-gpg
@@ -30,7 +29,7 @@ spec:
               name: gnupg-home
       containers:
         - name: main
-          image: golang:latest
+          image: golang:1.23.1-alpine3.20
           command: ["/bin/bash"]
           args: ["-c", "cd /app && go run ."]
           env:
