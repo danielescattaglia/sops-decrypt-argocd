@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sops-decrypt-plugin
-  namespace: argocd-plugins
+  namespace: argocd
 spec:
   selector:
     matchLabels:
