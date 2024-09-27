@@ -30,7 +30,7 @@ spec:
       containers:
         - name: main
           image: golang:1.23.1-alpine3.20
-          command: ["/bin/bash"]
+          command: ["/bin/sh"]
           args: ["-c", "cd /app && go run ."]
           env:
             - name: GNUPGHOME
