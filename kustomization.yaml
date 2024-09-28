@@ -8,7 +8,6 @@ resources:
   - manifests/argocd-extensions/applicationset-secret.yaml
   - manifests/argocd-extensions/deployment.yaml
   - manifests/argocd-extensions/service.yaml
-  - manifests/argocd-extensions/gpg-secrets.yaml
   # il secret gpg-secret deve essere già presente in argo
   #- manifests/argocd-extensions/gpg-secret.yaml (sops-gpg)
 
