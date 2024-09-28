@@ -68,7 +68,7 @@ spec:
         - name: sops-gpg
           secret:
             defaultMode: 420
-            secretName: sops-gpg
+            secretName: argocd-secret
         - name: sops-decrypt-script
           configMap:
             name: sops-decrypt-script
