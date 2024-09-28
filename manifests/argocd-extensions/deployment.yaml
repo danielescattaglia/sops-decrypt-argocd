@@ -53,10 +53,14 @@ spec:
             httpGet:
               path: /healthz
               port: 4355
+            initialDelaySeconds: 30
+            periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /healthz
               port: 4355
+            initialDelaySeconds: 30
+            periodSeconds: 5
       volumes:
         - name: token
           secret:
