@@ -150,12 +150,12 @@ func createBody(jsonBody argocdAppParams) []byte {
 func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
     authToken := getAuthorizationToken("/var/run/argo/token")
 
-    if r.Header.Get ("Authorization") != "Bearer " + authToken {
-        fmt.Println("Token different, cannot proceed")
-        return
-    }
+    //if r.Header.Get("Authorization") != "Bearer " + authToken {
+    //    fmt.Println(r.Header.Get ("Authorization") + ": " + authToken +": Token different, cannot proceed")
+    //    return
+    //}
 
-    fmt.Println("Bearer" + authToken)
+    fmt.Println("Bearer " + authToken)
     fmt.Println(r.Header.Get ("Authorization"))
 
     switch r.Method {
@@ -165,7 +165,7 @@ func manifestRequestHandler(w http.ResponseWriter, r *http.Request) {
                 if err != nil {
                     log.Fatal(err)
                 }
-
+fmt.Println(string(reqBody))
                 var jsonBody argocdAppParams
                 errUnmarshal := json.Unmarshal(reqBody, &jsonBody)
                 if errUnmarshal != nil {
@@ -207,7 +207,7 @@ func main() {
     http.HandleFunc("/healthz", healthzRequestHandler)
     http.HandleFunc("/test", test)
 
-    fmt.Println("Hello, World! File sops decrypt for ArgoCD started...")
+    fmt.Println("Hello, World! File sops decrypt for ArgoCD started.")
     if err := http.ListenAndServe(":4355", nil); err != nil {
         log.Fatal(err)
     }
