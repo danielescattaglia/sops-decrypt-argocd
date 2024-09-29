@@ -8,7 +8,7 @@ COPY /src/. .
 RUN go build -ldflags '-w -s' -v -o /usr/local/bin/sops-decrypt-argocd ./
 
 FROM alpine
+RUN apk add gpg gpg-agent
 COPY --from=builder /usr/local/bin/sops-decrypt-argocd /usr/local/bin/sops-decrypt-argocd
 RUN chmod +x /usr/local/bin/sops-decrypt-argocd
 ENTRYPOINT ["sops-decrypt-argocd"]
-
