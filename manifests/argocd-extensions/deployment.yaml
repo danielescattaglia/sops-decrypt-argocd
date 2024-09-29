@@ -29,7 +29,7 @@ spec:
               name: gnupg-home
       containers:
         - name: main
-          image: danieles/sops-decrypt-argo:0.0.1
+          image: danieles/sops-decrypt-argocd:0.0.1
           env:
             - name: GNUPGHOME
               value: /gnupg-home/.gnupg
